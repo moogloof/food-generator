@@ -1,2 +1,2 @@
-# bitch generator
-Generates bitches.
+# food generator
+Generates food.
