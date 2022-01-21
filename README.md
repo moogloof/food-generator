@@ -1,0 +1,2 @@
+# bitch generator
+Generates bitches.
