@@ -34,10 +34,7 @@ gen = models.Sequential([
 	layers.Dense(3000, activation="selu"),
 	layers.Dense(1000, activation="selu"),
 	layers.Dense(500, activation="selu"),
-	layers.Dense(200, activation="selu"),
 	layers.Dense(70, activation="selu"),
-	layers.Dense(200, activation="selu"),
-	layers.Dense(500, activation="selu"),
 	layers.Dense(250 * 250, activation="sigmoid"),
 	layers.Reshape([250, 250])
 ])
@@ -48,7 +45,6 @@ dis = models.Sequential([
 	layers.Dense(3000, activation="selu"),
 	layers.Dense(1000, activation="selu"),
 	layers.Dense(500, activation="selu"),
-	layers.Dense(200, activation="selu"),
 	layers.Dense(50, activation="selu"),
 	layers.Dense(1, activation="sigmoid")
 ])
