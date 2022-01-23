@@ -12,7 +12,7 @@ gen, _ = model.layers
 with open("data.bin", "rb") as f:
 	dataset = pickle.load(f)
 	dataset = np.asarray(dataset[random.randint(0, len(dataset)-1)])
-	dataset = np.reshape(dataset, (250, 250))
+	dataset = np.reshape(dataset, (150, 150, 3))
 
 # Get noise
 noise = tf.random.normal(shape=[1, 3000])

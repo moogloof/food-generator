@@ -32,18 +32,15 @@ def train_gan(gan, dataset, batch_size, codings_size, n_epochs=50):
 # Generator
 gen = models.Sequential([
 	layers.Dense(3000, activation="selu"),
-	layers.Dense(1000, activation="selu"),
 	layers.Dense(500, activation="selu"),
-	layers.Dense(70, activation="selu"),
-	layers.Dense(250 * 250, activation="sigmoid"),
-	layers.Reshape([250, 250])
+	layers.Dense(150 * 150 * 3, activation="sigmoid"),
+	layers.Reshape([150, 150, 3])
 ])
 
 # Discriminator
 dis = models.Sequential([
-	layers.Flatten(input_shape=[250, 250]),
+	layers.Flatten(input_shape=[150, 150, 3]),
 	layers.Dense(3000, activation="selu"),
-	layers.Dense(1000, activation="selu"),
 	layers.Dense(500, activation="selu"),
 	layers.Dense(50, activation="selu"),
 	layers.Dense(1, activation="sigmoid")
@@ -63,15 +60,18 @@ dis.trainable = False
 model.compile(loss="binary_crossentropy", optimizer="rmsprop")
 
 with open("data.bin", "rb") as f:
-	dataset = np.asarray(pickle.load(f))
+	dataset = np.array(pickle.load(f), dtype="float64")
 	print(dataset.shape)
-	dataset = np.reshape(dataset, (dataset.shape[0], 250, 250))
+	dataset = np.reshape(dataset, (dataset.shape[0], 150, 150, 3))
 	dataset = dataset[:(dataset.shape[0] // 20) * 20]
-	dataset = np.reshape(dataset, (dataset.shape[0] // 20, 20, 250, 250)) / 255
+	dataset = np.reshape(dataset, (dataset.shape[0] // 20, 20, 150, 150, 3)) / 255
+	print(dataset)
 
 try:
-	train_gan(model, dataset, 20, 3000)
+	train_gan(model, dataset, 20, 3000, 1)
 except KeyboardInterrupt:
-	# Save model status
-	model.save("model.h5")
+	pass
+
+# Save model status
+model.save("model.h5")
 
