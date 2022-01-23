@@ -68,7 +68,7 @@ with open("data.bin", "rb") as f:
 	print(dataset)
 
 try:
-	train_gan(model, dataset, 20, 3000, 1)
+	train_gan(model, dataset, 20, 3000)
 except KeyboardInterrupt:
 	pass
 
