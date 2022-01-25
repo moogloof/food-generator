@@ -70,7 +70,7 @@ with open("data.bin", "rb") as f:
 	print(dataset)
 
 try:
-	train_gan(model, dataset, 20, 1000, 2)
+	train_gan(model, dataset, 20, 1000, 5)
 except KeyboardInterrupt:
 	pass
 
