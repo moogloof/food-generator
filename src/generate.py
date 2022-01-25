@@ -8,25 +8,34 @@ import random
 model = tf.keras.models.load_model("model.h5")
 gen, _ = model.layers
 
+"""
 # Load data
 with open("data.bin", "rb") as f:
 	dataset = pickle.load(f)
-	dataset = np.asarray(dataset[random.randint(0, len(dataset)-1)])
-	dataset = np.reshape(dataset, (150, 150, 3))
+	dataset = np.asarray(dataset)
+	dataset_ids = np.random.choice(len(dataset)-1, 5, replace=False)
+	dataset = [dataset[i] for i in dataset_ids]
+	dataset = np.reshape(dataset, (5, 150, 150, 3))
+"""
 
 # Get noise
-noise = tf.random.normal(shape=[1, 3000])
+noise = tf.random.normal(shape=[5, 1000])
 
 # Generated images
 gen_image = gen(noise)
 
 # Plot generated images
-fig, axes = plt.subplots(1, 2, figsize=(10, 5))
-ax1 = axes[0]
-ax1.imshow(dataset, cmap="gray")
-ax1.set_title("Real")
-ax2 = axes[1]
-ax2.imshow(gen_image[0], cmap="gray")
-ax2.set_title("Generated")
+fig, axes = plt.subplots(2, 5, figsize=(12, 6))
+
+"""
+for i, ax in enumerate(axes[0, :]):
+	ax.imshow(dataset[i], cmap="gray")
+	ax.set_title("Real")
+"""
+
+for i, ax in enumerate(axes[1, :]):
+	ax.imshow(gen_image[i], cmap="gray")
+	ax.set_title("Generated")
+
 plt.tight_layout()
 plt.show()

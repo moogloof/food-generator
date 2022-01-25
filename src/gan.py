@@ -31,18 +31,20 @@ def train_gan(gan, dataset, batch_size, codings_size, n_epochs=50):
 # Networks
 # Generator
 gen = models.Sequential([
-	layers.Dense(3000, activation="selu"),
-	layers.Dense(500, activation="selu"),
+	layers.Dense(75 * 75 * 3 * 256, input_shape=[1000]),
+	layers.Reshape([150, 150, 3, 256]),
+	layers.BatchNormalization(),
+	layers.Conv2DTranspose(64, kernel_size=5, strides=2, padding="same", activation="selu"),
+	layers.BatchNormalization(),
 	layers.Dense(150 * 150 * 3, activation="sigmoid"),
 	layers.Reshape([150, 150, 3])
 ])
 
 # Discriminator
 dis = models.Sequential([
-	layers.Flatten(input_shape=[150, 150, 3]),
-	layers.Dense(3000, activation="selu"),
-	layers.Dense(500, activation="selu"),
-	layers.Dense(50, activation="selu"),
+	layers.Conv2D(64, kernel_size=5, strides=2, padding="same", activation="selu", input_shape=[150, 150, 3]),
+	layers.Dropout(0.3),
+	layers.Flatten(),
 	layers.Dense(1, activation="sigmoid")
 ])
 
@@ -68,7 +70,7 @@ with open("data.bin", "rb") as f:
 	print(dataset)
 
 try:
-	train_gan(model, dataset, 20, 3000)
+	train_gan(model, dataset, 20, 1000, 2)
 except KeyboardInterrupt:
 	pass
 
